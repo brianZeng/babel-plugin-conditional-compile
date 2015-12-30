@@ -16,6 +16,14 @@ else if(CODE_FOR_CHROME){
 ```
 But you don't want to log until it is published and
 if you know the code target,you can just kick the redundant when published.
+The code to publish for chrome will be like.
+```javascript
+
+var foo;
+
+foo=2;
+
+```
 
 ## Installation
 
