@@ -1,38 +1,22 @@
 /**
  * Created by brian on 12/30/15.
  */
-var source = require('vinyl-source-stream');
 var gulp = require('gulp');
-var browserify = require('browserify');
-var watchify = require('watchify');
-var path=require('path');
-gulp.task('prepare',function(){
-  return buildScript('./temp/babel-seed.js','./temp/babel.js')
-});
-gulp.task('test',function(callback){
-  buildScript('./temp/test.js','./temp/test-browser.js',{watch:true})
-});
-function buildScript(src,dest,opt) {
-  opt=opt||{};
-  var props = {entries:[src]};
-  var b=browserify(props);
-  var bundler = opt.watch ? watchify(b) : b;
-  bundler.transform("babelify", {presets: ["es2015"]});
-  function rebundle() {
-    var stream = bundler.bundle();
-    return stream.on('error', function(){
-      console.error.apply(console,arguments);
-      this.emit('end')
-    })
-      .pipe(source(lastFileName(dest)))
-      .pipe(gulp.dest(path.dirname(dest)));
-  }
-  bundler.on('update', function() {
-    rebundle();
-    console.log('Rebundle...');
-  });
-  return rebundle();
+var watchify = require('gulp-watchify');
+gulp.task('watch:test',build({src:'./test/index.js',dest:'./temp/test',watch:1}));
+gulp.task('build:test',build({src:'./test/index.js',dest:'./temp/test'}));
+
+gulp.task('watch:src',build({src:'./src/index.js',dest:'./dist/',watch:true}));
+gulp.task('build:src',build({src:'./src/index.js',dest:'./dist/'}));
+function build(opt){
+  return watchify(function(watchify){
+    return gulp.src(opt.src).
+    pipe(watchify({
+      watch:!!opt.watch,
+      transform:[['babelify',{presets:['es2015']}]]
+    })).
+    pipe(gulp.dest(opt.dest))
+  })
 }
-function lastFileName(src){
-  return src.substring(src.lastIndexOf(path.sep)+1)
-}
+
+

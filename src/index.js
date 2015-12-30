@@ -1,4 +1,3 @@
-"use strict";
 export default function (babel){
     let types=babel.types,mapKeys=[],mapFuncs;
     return {
@@ -20,8 +19,15 @@ export default function (babel){
           exit(path){
             let res=path.get('test').evaluate();
             if(res.confident){
-              let replacement=res.value? path.node.consequent:path.node.alternate;
-              path.replaceWith(replacement||types.emptyStatement())
+              let replacement=path.get(res.value?'consequent':'alternate');
+              let {node,scope}=replacement;
+              if(Object.getOwnPropertyNames(scope.bindings).length!=0){
+                path.replaceWith(node||types.emptyStatement())
+              }
+              else{
+                //no declaration in scope
+                path.replaceWithMultiple(node.body);
+              }
             }
           }
         }

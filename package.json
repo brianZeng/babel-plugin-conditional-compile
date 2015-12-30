@@ -1,0 +1,30 @@
+{
+  "name": "babel-plugin-conditional-compile",
+  "version": "0.0.1",
+  "description": "babel plugin for conditional compile",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "gulp build:test && node temp/test/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brianZeng/babel-plugin-conditional-compile.git"
+  },
+  "keywords": [
+    "babel",
+    "compile",
+    "bebel-plugin"
+  ],
+  "author": "brianZeng",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/brianZeng/babel-plugin-conditional-compile/issues"
+  },
+  "homepage": "https://github.com/brianZeng/babel-plugin-conditional-compile#readme",
+  "devDependencies": {
+    "babel-core": "^6.3.26",
+    "babelify": "^7.2.0",
+    "gulp": "^3.9.0",
+    "gulp-watchify": "^0.5.0"
+  }
+}
