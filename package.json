@@ -4,7 +4,8 @@
   "description": "babel plugin for conditional compile",
   "main": "dist/index.js",
   "scripts": {
-    "test": "gulp build:test && node temp/test/index.js"
+    "test": "node temp/test.js",
+    "prepare": "gulp build:test"
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,7 @@
     "babel-core": "^6.3.26",
     "babelify": "^7.2.0",
     "gulp": "^3.9.0",
+    "gulp-babel": "^6.1.1",
     "gulp-watchify": "^0.5.0"
   }
 }

@@ -1,15 +1,19 @@
 /**
  * Created by brian on 12/30/15.
  */
-import {babel} from './babel-core';
-import {default as plugin} from '../src';
-function compileToEqual(ori,result,define={},msg){
+"use strict";
+var babel=require('babel-core');
+var plugin=require('../dist').default;
+function compileToEqual(ori,result,define,msg){
   let transformedCode=babel.transform(ori+'',{
     compact:true,
     plugins:[
-      [plugin,{define}]
+      [plugin,{define:define||{}}]
     ]}).code,oriCode=babel.transform(result+'',{compact:true}).code;
-  console.assert(transformedCode==oriCode,msg||'expect code error')
+  console.assert(transformedCode==oriCode,msg||'expect code error');
+  if(msg){
+    console.log('success:'+msg);
+  }
 }
 
 compileToEqual(function a(){
