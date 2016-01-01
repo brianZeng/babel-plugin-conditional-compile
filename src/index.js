@@ -53,6 +53,6 @@ function mapAst(val,types){
     case "boolean":
       return ()=>types.BooleanLiteral(!!val);
     default:
-      throw Error('not support:'+type)
+      throw Error(`not support:${type} as conditional variable`);
   }
 }

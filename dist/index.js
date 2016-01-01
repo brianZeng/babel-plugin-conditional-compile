@@ -77,6 +77,6 @@ function mapAst(val, types) {
         return types.BooleanLiteral(!!val);
       };
     default:
-      throw Error('not support:' + type);
+      throw Error('not support:' + type + ' as conditional variable');
   }
 }
