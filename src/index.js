@@ -21,7 +21,11 @@ export default function (babel){
             if(res.confident){
               let replacement=path.get(res.value?'consequent':'alternate');
               let {node,scope}=replacement;
-              if(Object.getOwnPropertyNames(scope.bindings).length!=0){
+              if (scope.path !== replacement) {
+                //not a block
+                path.replaceWith(node || types.emptyStatement())
+              }
+              else if (Object.getOwnPropertyNames(scope.bindings).length != 0) {
                 path.replaceWith(node||types.emptyStatement())
               }
               else{
@@ -33,7 +37,7 @@ export default function (babel){
         }
       }
     }
-  };
+}
 
 function mapAst(val,types){
   let type= typeof val;

@@ -35,7 +35,10 @@ exports.default = function (babel) {
             var node = replacement.node;
             var scope = replacement.scope;
 
-            if (Object.getOwnPropertyNames(scope.bindings).length != 0) {
+            if (scope.path !== replacement) {
+              //not a block
+              path.replaceWith(node || types.emptyStatement());
+            } else if (Object.getOwnPropertyNames(scope.bindings).length != 0) {
               path.replaceWith(node || types.emptyStatement());
             } else {
               //no declaration in scope
@@ -49,8 +52,6 @@ exports.default = function (babel) {
 };
 
 function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
-
-;
 
 function mapAst(val, types) {
   var type = typeof val === 'undefined' ? 'undefined' : _typeof(val);

@@ -16,13 +16,33 @@ function compileToEqual(ori,result,define,msg){
   }
 }
 
+compileToEqual(function a() {
+  if (IS_DEV)
+    console.log('dev');
+}, function a() {
+  ;
+}, {IS_DEV: 0}, 'simple remove');
+compileToEqual(function a() {
+  if (IS_DEV)
+    console.log('dev');
+}, function a() {
+  console.log('dev')
+}, {IS_DEV: 1}, 'simple no block');
+compileToEqual(function a() {
+  if (IS_DEV) {
+    let a = 3;
+    console.log(a);
+  }
+}, function a() {
+  ;
+}, {IS_DEV: 0}, 'remove block');
 compileToEqual(function a(){
   if(IS_DEV){
     console.log('dev');
   }
 },function a(){
   console.log('dev')
-},{IS_DEV:1},'simple');
+}, {IS_DEV: 1}, 'simple with block');
 compileToEqual(function if_else(){
   if(IS_DEV){
     a()
