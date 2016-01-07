@@ -20,7 +20,6 @@ compileToEqual(function a() {
   if (IS_DEV)
     console.log('dev');
 }, function a() {
-  ;
 }, {IS_DEV: 0}, 'simple remove');
 compileToEqual(function a() {
   if (IS_DEV)
@@ -28,13 +27,47 @@ compileToEqual(function a() {
 }, function a() {
   console.log('dev')
 }, {IS_DEV: 1}, 'simple no block');
+compileToEqual(
+  function a() {
+    if (isNaN(x) && IS_DEV) throw Error('x is nan');
+  },
+  function a() {
+
+  }, {IS_DEV: false}, 'binary && ->false');
+compileToEqual(
+  function a() {
+    if (IS_DEV && isNaN(x)) throw Error('x is nan');
+  },
+  function a() {
+    if (isNaN(x)) throw Error('x is nan');
+  }, {IS_DEV: true}, 'binary && -> right');
+compileToEqual(
+  function a() {
+    if (IS_DEV || isNaN(x)) throw Error('x is nan');
+  },
+  function a() {
+    throw Error('x is nan');
+  }, {IS_DEV: true}, 'binary || ->true');
+compileToEqual(
+  function a() {
+    if (IS_DEV || isNaN(x)) throw Error('x is nan');
+  },
+  function a() {
+    if (isNaN(x))throw Error('x is nan');
+  }, {IS_DEV: 0}, 'binary || ->right');
+compileToEqual(
+  function a() {
+    if (IS_DEV || IS_P2 && IS_TH) throw Error('x is nan');
+  },
+  function a() {
+    throw Error('x is nan');
+  }, {IS_DEV: 0, IS_P2: 1, IS_TH: 1}, 'binary complex');
 compileToEqual(function a() {
   if (IS_DEV) {
     let a = 3;
     console.log(a);
   }
 }, function a() {
-  ;
 }, {IS_DEV: 0}, 'remove block');
 compileToEqual(function a(){
   if(IS_DEV){

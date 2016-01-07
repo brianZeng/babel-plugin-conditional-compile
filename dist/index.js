@@ -37,13 +37,26 @@ exports.default = function (babel) {
 
             if (scope.path !== replacement) {
               //not a block
-              path.replaceWith(node || types.emptyStatement());
+              node ? path.replaceWith(node) : path.remove();
             } else if (Object.getOwnPropertyNames(scope.bindings).length != 0) {
-              path.replaceWith(node || types.emptyStatement());
+              node ? path.replaceWith(node) : path.remove();
             } else {
               //no declaration in scope
               path.replaceWithMultiple(node.body);
             }
+          }
+        }
+      },
+      LogicalExpression: {
+        exit: function exit(path) {
+          var operator = path.node.operator;
+          var left = path.get('left');
+          var right = path.get('right');
+          var leftVal = left.evaluate();
+          if (operator == '||' && leftVal.confident) {
+            path.replaceWith(leftVal.value ? left : right);
+          } else if (operator == '&&' && leftVal.confident) {
+            path.replaceWith(leftVal.value ? right : left);
           }
         }
       }

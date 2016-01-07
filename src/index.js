@@ -23,15 +23,27 @@ export default function (babel){
               let {node,scope}=replacement;
               if (scope.path !== replacement) {
                 //not a block
-                path.replaceWith(node || types.emptyStatement())
+                node ? path.replaceWith(node) : path.remove();
               }
               else if (Object.getOwnPropertyNames(scope.bindings).length != 0) {
-                path.replaceWith(node||types.emptyStatement())
+                node ? path.replaceWith(node) : path.remove();
               }
               else{
                 //no declaration in scope
                 path.replaceWithMultiple(node.body);
               }
+            }
+          }
+        },
+        LogicalExpression: {
+          exit(path){
+            let {operator}=path.node, left = path.get('left'), right = path.get('right'),
+              leftVal = left.evaluate();
+            if (operator == '||' && leftVal.confident) {
+              path.replaceWith(leftVal.value ? left : right)
+            }
+            else if (operator == '&&' && leftVal.confident) {
+              path.replaceWith(leftVal.value ? right : left)
             }
           }
         }
