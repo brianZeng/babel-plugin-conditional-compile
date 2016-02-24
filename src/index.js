@@ -1,9 +1,10 @@
 export default function (babel){
-    let types=babel.types,mapKeys=[],mapFuncs;
+  let types = babel.types, mapKeys = [], mapFuncs, dropDebugger;
     return {
       visitor:{
         Program(path,PluginPass){
           let {define}=PluginPass.opts;
+          dropDebugger = !!PluginPass.opts.dropDebugger;
           if(define){
             mapKeys=Object.getOwnPropertyNames(define);
             mapFuncs=mapKeys.map(key=>mapAst(define[key],types))
@@ -13,6 +14,11 @@ export default function (babel){
           let i=mapKeys.indexOf(path.node.name);
           if(i!==-1){
             path.replaceWith(mapFuncs[i]())
+          }
+        },
+        DebuggerStatement(path){
+          if (dropDebugger) {
+            path.remove();
           }
         },
         Conditional:{

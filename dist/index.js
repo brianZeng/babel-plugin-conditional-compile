@@ -7,12 +7,14 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = function (babel) {
   var types = babel.types,
       mapKeys = [],
-      mapFuncs = undefined;
+    mapFuncs = undefined,
+    dropDebugger = undefined;
   return {
     visitor: {
       Program: function Program(path, PluginPass) {
         var define = PluginPass.opts.define;
 
+        dropDebugger = !!PluginPass.opts.dropDebugger;
         if (define) {
           mapKeys = Object.getOwnPropertyNames(define);
           mapFuncs = mapKeys.map(function (key) {
@@ -24,6 +26,11 @@ exports.default = function (babel) {
         var i = mapKeys.indexOf(path.node.name);
         if (i !== -1) {
           path.replaceWith(mapFuncs[i]());
+        }
+      },
+      DebuggerStatement: function DebuggerStatement(path){
+        if (dropDebugger) {
+          path.remove();
         }
       },
 

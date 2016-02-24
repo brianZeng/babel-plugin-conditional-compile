@@ -56,3 +56,17 @@ var foo;
 foo=1;
 
 ```
+
+## Options
+The available options are
+```
+{
+  define:{
+    APP_VERSION:'1.0.0',
+    IS_DEV:true
+  },
+  dropDebugger:false
+}
+```
+* any variable same with key name in define object will be replace by its value
+* when dropDebugger set true, the `debugger;` statement will be removed
