@@ -200,8 +200,8 @@ export function evaluate():{ confident: boolean; value: any } {
         if (resolved === path) {
           return deopt(path);
         } else if (!resolved.type && resolved.key == 'init') {
-          //undifined varibale
-          return deopt(path);
+          //undefined variable
+          return undefined;
         } else {
           return evaluate(resolved);
         }
