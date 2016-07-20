@@ -93,8 +93,8 @@ export function evaluate():{ confident: boolean; value: any } {
       }
     } else {
       let item = { resolved: false };
-      //function params shold not be cached
-      if (path.listKey == "params" && !path.isIdentifier()) {
+      //function params should not be cached
+      if (!path.isIdentifier()) {
         seen.set(node, item);
       }
 
@@ -198,6 +198,9 @@ export function evaluate():{ confident: boolean; value: any } {
 
         let resolved = path.resolve();
         if (resolved === path) {
+          return deopt(path);
+        } else if (!resolved.type && resolved.key == 'init') {
+          //undifined varibale
           return deopt(path);
         } else {
           return evaluate(resolved);

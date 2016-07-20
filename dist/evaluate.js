@@ -101,8 +101,8 @@ function evaluate() {
       }
     } else {
       var item = { resolved: false };
-      //function params shold not be cached
-      if (path.listKey == "params" && !path.isIdentifier()) {
+      //function params should not be cached
+      if (!path.isIdentifier()) {
         seen.set(node, item);
       }
 
@@ -229,6 +229,9 @@ function evaluate() {
 
         var resolved = path.resolve();
         if (resolved === path) {
+          return deopt(path);
+        } else if (!resolved.type && resolved.key == 'init') {
+          //undifined varibale
           return deopt(path);
         } else {
           return evaluate(resolved);

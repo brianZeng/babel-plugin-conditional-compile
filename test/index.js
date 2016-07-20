@@ -17,6 +17,35 @@ function compileToEqual(ori, result, cfg, msg) {
     console.log('success:' + msg);
   }
 }
+
+compileToEqual(function param() {
+  var a;
+  if (a) {
+    a = 5;
+  }
+}, function param() {
+  var a;
+  if (a) {
+    a = 5;
+  }
+}, {}, 'assign in if block');
+compileToEqual(function param() {
+  if (a) {
+    console.log('a')
+  }
+}, function param() {
+  if (a) {
+    console.log('a')
+  }
+}, {}, 'undefined variable');
+compileToEqual(function param() {
+  var a;
+  if (a) {
+    console.log('a')
+  }
+}, function param() {
+  var a;
+}, {}, 'variable is const');
 compileToEqual(function addEventListener(obj, evtName, handler, once) {
   if (typeof evtName == "string" && evtName) {
     if (!obj.hasOwnProperty('$$callbacks')) {
@@ -32,6 +61,7 @@ compileToEqual(function addEventListener(obj, evtName, handler, once) {
   }
   return false;
 }, {}, 'param complex');
+
 compileToEqual(function param(a) {
   if (a) {
     console.log('a')
@@ -40,16 +70,7 @@ compileToEqual(function param(a) {
   if (a) {
     console.log('a')
   }
-}, {}, 'param');
-compileToEqual(function param(a) {
-  if (a) {
-    console.log('a')
-  }
-}, function param(a) {
-  if (a) {
-    console.log('a')
-  }
-}, { a: false }, 'no effect param');
+}, {}, 'no effect param');
 compileToEqual(function a() {
   debugger;
 }, function a() {
