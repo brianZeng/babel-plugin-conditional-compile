@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-conditional-compile",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "babel plugin for conditional compile",
   "main": "dist/index.js",
   "scripts": {
@@ -23,7 +23,8 @@
   },
   "homepage": "https://github.com/brianZeng/babel-plugin-conditional-compile#readme",
   "devDependencies": {
-    "babel-core": "^6.3.26",
+    "babel-core": "^6.11.4",
+    "babel-preset-stage-0": "^6.5.0",
     "babelify": "^7.2.0",
     "gulp": "^3.9.0",
     "gulp-babel": "^6.1.1",

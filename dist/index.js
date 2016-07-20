@@ -1,5 +1,7 @@
 'use strict';
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -7,8 +9,8 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = function (babel) {
   var types = babel.types,
       mapKeys = [],
-    mapFuncs = undefined,
-    dropDebugger = undefined;
+      mapFuncs = void 0,
+      dropDebugger = void 0;
   return {
     visitor: {
       Program: function Program(path, PluginPass) {
@@ -28,7 +30,7 @@ exports.default = function (babel) {
           path.replaceWith(mapFuncs[i]());
         }
       },
-      DebuggerStatement: function DebuggerStatement(path){
+      DebuggerStatement: function DebuggerStatement(path) {
         if (dropDebugger) {
           path.remove();
         }
@@ -36,7 +38,8 @@ exports.default = function (babel) {
 
       Conditional: {
         exit: function exit(path) {
-          var res = path.get('test').evaluate();
+          var res = _evaluate.evaluate.call(path.get('test'));
+
           if (res.confident) {
             var replacement = path.get(res.value ? 'consequent' : 'alternate');
             var node = replacement.node;
@@ -56,10 +59,8 @@ exports.default = function (babel) {
       },
       LogicalExpression: {
         exit: function exit(path) {
-          var operator = path.node.operator;
-          var left = path.get('left');
-          var right = path.get('right');
-          var leftVal = left.evaluate();
+          var operator = path.node.operator;var left = path.get('left');var right = path.get('right');
+          var leftVal = _evaluate.evaluate.call(left);
           if (operator == '||' && leftVal.confident) {
             path.replaceWith(leftVal.value ? left : right);
           } else if (operator == '&&' && leftVal.confident) {
@@ -71,7 +72,7 @@ exports.default = function (babel) {
   };
 };
 
-function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
+var _evaluate = require('./evaluate');
 
 function mapAst(val, types) {
   var type = typeof val === 'undefined' ? 'undefined' : _typeof(val);

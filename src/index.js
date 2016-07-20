@@ -1,3 +1,4 @@
+import { evaluate } from './evaluate'
 export default function (babel){
   let types = babel.types, mapKeys = [], mapFuncs, dropDebugger;
     return {
@@ -23,7 +24,8 @@ export default function (babel){
         },
         Conditional:{
           exit(path){
-            let res=path.get('test').evaluate();
+            let res = evaluate.call(path.get('test'));
+            
             if(res.confident){
               let replacement=path.get(res.value?'consequent':'alternate');
               let {node,scope}=replacement;
@@ -44,7 +46,7 @@ export default function (babel){
         LogicalExpression: {
           exit(path){
             let {operator}=path.node, left = path.get('left'), right = path.get('right'),
-              leftVal = left.evaluate();
+              leftVal = evaluate.call(left);
             if (operator == '||' && leftVal.confident) {
               path.replaceWith(leftVal.value ? left : right)
             }

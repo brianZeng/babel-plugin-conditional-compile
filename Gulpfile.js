@@ -9,7 +9,7 @@ gulp.task('watch:test',build({src:'./test/index.js',filename:'test',dest:'./temp
 gulp.task('build:test',build({src:'./test/index.js',filename:'test',dest:'./temp'}));
 gulp.task('build:src',function(){
   return gulp.src('src/**/*.js').pipe(babel({
-    presets:['es2015']
+    presets: ['es2015', 'react', 'stage-0']
   })).pipe(gulp.dest('dist'))
 });
 gulp.task('watch:src',['build:src'],function(){
