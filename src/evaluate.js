@@ -282,6 +282,7 @@ export function evaluate():{ confident: boolean; value: any } {
 
           return left || right;
         case "&&":
+          return;
 
           if ((!left && leftConfident) || (!right && rightConfident)) {
             confident = true;
